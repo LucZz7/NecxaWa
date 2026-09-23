@@ -3,7 +3,17 @@
 Ye folder OpenWA ka **asli backend** (WhatsApp gateway engine) chalata hai.
 Console (website) sirf remote hai — engine ye hai.
 
-## Sabse aasan tarika — Docker (2 minute)
+## PC nahi hai? Phone se chalana hai?
+
+**1-click cloud backend (free):** phone ke browser me ye link kholo —
+
+**https://codespaces.new/LucZz7/NecxaWa**
+
+Create codespace dabao → backend khud start hoga → PORTS me 2785 ko
+**Public** karo → URL + API key console me daalo → QR scan karo.
+Poora step-by-step: [`CLOUD_BACKEND.md`](../CLOUD_BACKEND.md)
+
+## Apne PC/server par — Docker (2 minute)
 
 **Chahiye:** Docker Desktop / Docker Engine
 

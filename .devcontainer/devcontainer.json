@@ -1,0 +1,1 @@
+{"customizations":{"codespaces":{"openFiles":["CLOUD_BACKEND.md"]}},"features":{"ghcr.io/devcontainers/features/docker-in-docker:2":{"version":"latest"}},"image":"mcr.microsoft.com/devcontainers/base:ubuntu","name":"NecxaWA Cloud Backend","portsAttributes":{"2785":{"label":"NecxaWA Backend API","onAutoForward":"notify"}},"postStartCommand":"bash .devcontainer/start.sh"}

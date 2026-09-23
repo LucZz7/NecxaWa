@@ -25,18 +25,32 @@ OpenWA backend (YOU run this — Docker, port 2785)
 
 The backend cannot run on GitHub Pages (static hosting only). You run it yourself — free — on your own machine or any server.
 
-## Quickstart (5 minutes, free)
+## Quickstart — backend 1 command me (free)
+
+Sabse aasan: **`backend/` folder** me ready-made setup hai.
 
 ```bash
-# 1. Run the backend
+cd backend
+bash start.sh        # Linux/Mac  →  Docker se backend LIVE
+```
+Windows par `backend/start.bat` par double-click karo. Script khud API key
+banayega aur URL + key print karega. Phir:
+
+1. Console kholo: https://luczz7.github.io/NecxaWa/console.html
+2. **Connection** me Backend URL + API key daal ke **Test Connection** dabao
+3. **Sessions** me naam likh ke **Create** → **Start** → QR scan karo apne phone se
+4. **Send Message** se asli WhatsApp message bhejo
+
+Bina Docker ke: `backend/setup-node.sh` (Node.js 22+). Poori guide:
+[`backend/README.md`](backend/README.md).
+
+Purana manual tarika (agar khud karna ho):
+
+```bash
 git clone https://github.com/rmyndharis/OpenWA
 cd OpenWA
 docker compose up -d
-
-# 2. Copy the first-boot admin API key
 docker logs openwa-api 2>&1 | grep -i "api key"
-
-# 3. Open the console, enter http://localhost:2785 + your key, create a session, scan the QR
 ```
 
 See `.env.example` for backend settings (notably `CORS_ORIGINS` when the console and backend are on different origins).
@@ -56,6 +70,7 @@ Run the same `docker compose up -d` on an always-on machine: a home server, or a
 | `js/console.js` | Real OpenWA REST client (`X-API-Key` auth) |
 | `css/style.css` | Red/black/white glassmorphism theme |
 | `.env.example` | Backend environment template |
+| `backend/` | **One-command backend setup**: `docker-compose.yml`, `start.sh` (Linux/Mac), `start.bat` (Windows), `setup-node.sh` (bina Docker), Hinglish `README.md` |
 
 ## Honest notes
 

@@ -59,8 +59,9 @@
       log("Connected to " + window.NECXAWA.getApiBase(), "ok2");
     } catch (e) {
       out.innerHTML = `<div class="alert alert-red"><span class="status-dot bad"></span>Connection failed: ${esc(e.message)}<br><br>
-        Check: 1) OpenWA is running (<span class="mono">docker compose up -d</span>), 2) the base URL is correct (default <span class="mono">http://localhost:2785</span>),
-        3) the API key matches (first-boot key is printed in <span class="mono">docker logs openwa-api</span>), 4) <span class="mono">CORS_ORIGINS</span> allows this page.</div>`;
+        Backend abhi chal nahi raha. 1-command setup yahan hai:<br>
+        <a href="https://github.com/LucZz7/NecxaWa/tree/main/backend" target="_blank" rel="noopener" style="color:#ff6b6b;font-weight:600">backend setup guide kholo</a>
+        — <span class="mono">start.sh</span> / <span class="mono">start.bat</span> chalao, phir URL + key yahan daalo.</div>`;
       log("Connection failed: " + e.message, "err");
     }
   }

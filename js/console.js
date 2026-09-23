@@ -282,9 +282,28 @@
   }
 
   /* ---------- wire up ---------- */
+  // Auto-discover the managed backend URL (kept fresh in backend-url.txt on the repo).
+  // Skipped when ?api= is given or the user already configured a non-local backend.
+  async function autoDiscoverBackend() {
+    try {
+      if (new URLSearchParams(location.search).get("api")) return;
+      const cur = window.NECXAWA.getApiBase();
+      if (cur && !/localhost|127\.0\.0\.1/.test(cur)) return;
+      const r = await fetch("https://raw.githubusercontent.com/LucZz7/NecxaWa/main/backend-url.txt", { cache: "no-store" });
+      if (!r.ok) return;
+      const url = (await r.text()).trim().replace(/\/+$/, "");
+      if (/^https:\/\//i.test(url)) {
+        $("api-base").value = url;
+        window.NECXAWA.save(url, window.NECXAWA.getApiKey());
+        log("Backend URL auto-detected: " + url, "inf");
+      }
+    } catch (e) { /* offline — user enters the URL manually */ }
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     $("api-base").value = window.NECXAWA.getApiBase();
     $("api-key").value = window.NECXAWA.getApiKey();
+    autoDiscoverBackend();
     $("save-conn").onclick = () => {
       window.NECXAWA.save($("api-base").value.trim(), $("api-key").value.trim());
       log("Connection settings saved.", "inf");

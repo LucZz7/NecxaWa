@@ -1,0 +1,17 @@
+services:
+  openwa-api:
+    image: rmyndharis/openwa:0.23.6
+    container_name: openwa-api
+    restart: unless-stopped
+    ports:
+      - "2785:2785"
+    environment:
+      API_MASTER_KEY: ${API_MASTER_KEY:?API_MASTER_KEY .env me set karo (start.sh khud bana dega)}
+      CORS_ORIGINS: ${CORS_ORIGINS:-*}
+      SERVE_DASHBOARD: "false"
+      NODE_ENV: production
+    volumes:
+      - openwa-data:/app/data
+
+volumes:
+  openwa-data:

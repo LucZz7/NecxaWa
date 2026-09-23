@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NecxaWA — Self-Hosted WhatsApp API Gateway Console</title>
+<meta name="description" content="NecxaWA is a real, working console for the OpenWA WhatsApp API gateway. Run the backend with Docker, pair with QR, and send messages through a real REST API.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23e11d2e'/><path d='M16 7c-5 0-9 3.6-9 8.2 0 1.6.5 3.1 1.4 4.3L7 23l3.7-1.3c1.1.6 2.4 1 3.8 1h.1c5 0 9-3.6 9-8.2S21 7 16 7z' fill='white'/></svg>">
+</head>
+<body>
+<div class="grid-bg"></div>
+<nav><div class="wrap nav-inner">
+  <a class="logo" href="index.html">
+    <svg width="30" height="30" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#e11d2e"/><path d="M16 7c-5 0-9 3.6-9 8.2 0 1.6.5 3.1 1.4 4.3L7 23l3.7-1.3c1.1.6 2.4 1 3.8 1h.1c5 0 9-3.6 9-8.2S21 7 16 7z" fill="white"/><circle cx="12.5" cy="14.5" r="1.3" fill="#e11d2e"/><circle cx="19.5" cy="14.5" r="1.3" fill="#e11d2e"/><path d="M12.5 18.5c1 1.2 2.2 1.8 3.5 1.8s2.5-.6 3.5-1.8" stroke="#e11d2e" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+    Necxa<b>WA</b>
+  </a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#setup">Setup</a>
+    <a href="docs.html">API Docs</a>
+    <a class="btn btn-red" href="console.html" style="padding:10px 20px">Open Console</a>
+  </div>
+</div></nav>
+
+<header class="hero wrap">
+  <div class="pill reveal"><span class="dot"></span> Real working build — powered by the open-source OpenWA gateway</div>
+  <h1 class="reveal">WhatsApp automation,<br><span class="grad">self-hosted &amp; real.</span></h1>
+  <p class="reveal">NecxaWA is a real console for the OpenWA WhatsApp API gateway. Run the backend on your own machine or server with Docker, pair your WhatsApp with a QR code, and send messages, media and webhooks through a genuine REST API — no fake simulations.</p>
+  <div class="hero-cta reveal">
+    <a class="btn btn-red" href="console.html">Launch Console
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <a class="btn btn-ghost" href="#setup">Self-host in 5 minutes</a>
+  </div>
+</header>
+
+<section id="features"><div class="wrap">
+  <h2 class="sec-title reveal">What you actually get</h2>
+  <p class="sec-sub reveal">Everything below talks to a real OpenWA backend over its documented REST API. Nothing is simulated.</p>
+  <div class="cards">
+    <div class="card glass reveal">
+      <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff6b7a" stroke-width="2"><rect x="3" y="4" width="18" height="14" rx="3"/><path d="M8 21h8M12 18v3"/></svg></div>
+      <h3>Real session pairing</h3><p>Create a WhatsApp session and pair it by scanning a live QR code served by the backend — or use an 8-digit pairing code. Same flow as WhatsApp Web.</p>
+    </div>
+    <div class="card glass reveal">
+      <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff6b7a" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></div>
+      <h3>Real message sending</h3><p>Send text, images, documents, audio, video, stickers, locations, polls and contacts through real <span class="mono">POST /messages/send-*</span> endpoints.</p>
+    </div>
+    <div class="card glass reveal">
+      <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff6b7a" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
+      <h3>Chats &amp; contacts</h3><p>List real chats from the paired account, check whether a number is on WhatsApp, and read message history per chat.</p>
+    </div>
+    <div class="card glass reveal">
+      <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff6b7a" stroke-width="2"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg></div>
+      <h3>Webhooks</h3><p>Register real webhook URLs per session and receive live events for inbound messages, status changes and delivery updates.</p>
+    </div>
+    <div class="card glass reveal">
+      <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff6b7a" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+      <h3>API-key security</h3><p>Every request is authenticated with an <span class="mono">X-API-Key</span> header. Keys are created and revoked from the backend; the console never hardcodes secrets.</p>
+    </div>
+    <div class="card glass reveal">
+      <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff6b7a" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+      <h3>100% free software</h3><p>OpenWA is MIT-licensed and this console is static — host it on GitHub Pages for free, run the backend on your own hardware with Docker.</p>
+    </div>
+  </div>
+</div></section>
+
+<section id="setup"><div class="wrap">
+  <h2 class="sec-title reveal">Go live in 5 minutes</h2>
+  <p class="sec-sub reveal">The console on this page is a static frontend. The real engine is OpenWA, which you run yourself — free, on your own machine or any server.</p>
+  <div class="steps">
+    <div class="step glass reveal"><div class="num">01</div>
+      <h3>Run the OpenWA backend</h3><p>Docker only. The API starts on port 2785.</p>
+      <code>git clone https://github.com/rmyndharis/OpenWA
+cd OpenWA
+docker compose up -d</code>
+    </div>
+    <div class="step glass reveal"><div class="num">02</div>
+      <h3>Copy your API key</h3><p>On first boot OpenWA prints a random admin key. Grab it from the logs.</p>
+      <code>docker logs openwa-api 2>&1 | grep -i "api key"</code>
+    </div>
+    <div class="step glass reveal"><div class="num">03</div>
+      <h3>Connect this console</h3><p>Open the console, paste <span class="mono">http://localhost:2785</span> and your API key, hit Test — then create a session and scan the QR.</p>
+      <code>Console → Connection → Test connection</code>
+    </div>
+  </div>
+  <div class="glass reveal" style="margin-top:26px;padding:26px">
+    <h3 style="margin-bottom:10px">Want it online 24/7?</h3>
+    <p style="color:var(--muted);font-size:14px;line-height:1.7">Run the same <span class="mono">docker compose up -d</span> on any always-on machine — a home server, or a free-tier VPS such as Oracle Cloud's Always Free VM. Then point this console at <span class="mono">https://your-server:2785</span> (put a reverse proxy with TLS in front, and set <span class="mono">CORS_ORIGINS</span> to this site's URL). The console itself stays free on GitHub Pages forever.</p>
+  </div>
+  <div class="alert alert-amber reveal" style="margin-top:20px">
+    <b>Fair warning:</b> this automates WhatsApp Web, which is unofficial. WhatsApp may restrict numbers that send bulk or spammy traffic. Use your own number, warm it up gradually, and only message people who expect your messages.
+  </div>
+</div></section>
+
+<section><div class="wrap" style="text-align:center">
+  <h2 class="sec-title reveal">Ready to pair your WhatsApp?</h2>
+  <p class="sec-sub reveal">Backend running? Open the console and scan your first QR.</p>
+  <a class="btn btn-red reveal" href="console.html" style="font-size:16px;padding:15px 34px">Open NecxaWA Console</a>
+</div></section>
+
+<footer><div class="wrap foot">
+  <span>NecxaWA — real console for the open-source <a href="https://github.com/rmyndharis/OpenWA" style="margin:0">OpenWA</a> gateway (MIT).</span>
+  <span><a href="console.html">Console</a><a href="docs.html">API Docs</a><a href="https://github.com/rmyndharis/OpenWA">OpenWA GitHub</a></span>
+</div></footer>
+<script src="js/main.js"></script>
+</body>
+</html>

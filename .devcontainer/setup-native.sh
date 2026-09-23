@@ -22,7 +22,7 @@ cd "$BK/openwa-src"
 echo "== [3/4] API key =="
 if [ ! -f "$BK/.env" ]; then
   KEY=$(openssl rand -hex 32 2>/dev/null || head -c 32 /dev/urandom | od -An -tx1 | tr -d ' \n')
-  printf 'API_MASTER_KEY=%s\nCORS_ORIGINS=https://luczz7.github.io # OpenWA refuses '*' in production; explicit origin needed\nPORT=2785\nSERVE_DASHBOARD=false\nNODE_ENV=production\nPUPPETEER_EXECUTABLE_PATH=%s\n' "$KEY" "$(command -v chromium)" > "$BK/.env"
+  printf 'API_MASTER_KEY=%s\nCORS_ORIGINS=https://luczz7.github.io\nPORT=2785\nSERVE_DASHBOARD=false\nNODE_ENV=production\nPUPPETEER_EXECUTABLE_PATH=%s\n' "$KEY" "$(command -v chromium)" > "$BK/.env"
   chmod 600 "$BK/.env"
 fi
 

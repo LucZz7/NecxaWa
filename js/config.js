@@ -1,12 +1,17 @@
 /* NecxaWA config - backend connection stored locally in the browser.
-   Tip: console.html?api=https://xxx-2785.app.github.dev pre-fills the URL. */
+   Tip: console.html?api=https://xxx&key=yyy pre-fills the URL + key. */
 (function () {
   const DEFAULT_BASE = "http://localhost:2785";
-  // ?api= query param (e.g. from the 1-click cloud backend link) pre-fills + saves the URL
+  // ?api= / ?key= query params pre-fill + save the connection (one-tap setup links)
   try {
-    const q = new URLSearchParams(location.search).get("api");
+    const qp = new URLSearchParams(location.search);
+    const q = qp.get("api");
     if (q && /^https?:\/\//i.test(q)) {
       localStorage.setItem("necxawa_api_base", q.replace(/\/+$/, ""));
+    }
+    const k = qp.get("key");
+    if (k && k.trim().length >= 8) {
+      localStorage.setItem("necxawa_api_key", k.trim());
     }
   } catch (e) {}
   window.NECXAWA = {

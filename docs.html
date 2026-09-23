@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Docs — NecxaWA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="grid-bg"></div>
+<nav><div class="wrap nav-inner">
+  <a class="logo" href="index.html">Necxa<b>WA</b></a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="console.html">Console</a>
+    <a class="btn btn-red" href="console.html" style="padding:10px 20px">Open Console</a>
+  </div>
+</div></nav>
+
+<div class="wrap" style="padding:60px 22px">
+  <h1 class="sec-title reveal">API documentation</h1>
+  <p class="sec-sub reveal">Real endpoints from the OpenWA gateway (v0.23.6, 160 routes). Base URL defaults to <span class="mono">http://localhost:2785</span>. Every request needs your API key in the <span class="mono">X-API-Key</span> header.</p>
+
+  <div class="alert alert-amber reveal">Replace <span class="mono">YOUR_API_KEY</span> with the key from <span class="mono">docker logs openwa-api</span>, and <span class="mono">SESSION_ID</span> with the UUID returned when you create a session.</div>
+
+  <section style="padding:30px 0">
+    <h2 class="reveal" style="margin-bottom:14px">1. Health check</h2>
+    <div class="term reveal"><div class="term-bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="mono" style="color:#5b5b66;font-size:12px">bash</span></div><pre><span class="k">curl</span> http://localhost:2785/api/health/ready</pre></div>
+  </section>
+
+  <section style="padding:30px 0">
+    <h2 class="reveal" style="margin-bottom:14px">2. Create a session</h2>
+    <div class="term reveal"><div class="term-bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="mono" style="color:#5b5b66;font-size:12px">bash</span></div><pre><span class="k">curl</span> -X POST http://localhost:2785/api/sessions \
+  -H <span class="s">"X-API-Key: YOUR_API_KEY"</span> \
+  -H <span class="s">"Content-Type: application/json"</span> \
+  -d <span class="s">'{"name": "my-bot"}'</span>
+
+<span class="c"># → 201 {"id":"0a941dac-...","name":"my-bot","status":"created",...}</span></pre></div>
+  </section>
+
+  <section style="padding:30px 0">
+    <h2 class="reveal" style="margin-bottom:14px">3. Pair via QR code</h2>
+    <div class="term reveal"><div class="term-bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="mono" style="color:#5b5b66;font-size:12px">bash</span></div><pre><span class="k">curl</span> http://localhost:2785/api/sessions/SESSION_ID/qr \
+  -H <span class="s">"X-API-Key: YOUR_API_KEY"</span>
+
+<span class="c"># → 200 {"qrCode":"data:image/png;base64,...","status":"qr_ready"}</span>
+<span class="c"># Render the data URL as an image and scan it with WhatsApp → Linked devices.</span>
+<span class="c"># Alternative: POST /api/sessions/SESSION_ID/pairing-code {"phoneNumber":"628123456789"}</span>
+<span class="c"># → {"pairingCode":"ABCD1234","status":"qr_ready"} — enter it on your phone.</span></pre></div>
+  </section>
+
+  <section style="padding:30px 0">
+    <h2 class="reveal" style="margin-bottom:14px">4. Send a text message</h2>
+    <div class="term reveal"><div class="term-bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="mono" style="color:#5b5b66;font-size:12px">bash</span></div><pre><span class="k">curl</span> -X POST http://localhost:2785/api/sessions/SESSION_ID/messages/send-text \
+  -H <span class="s">"X-API-Key: YOUR_API_KEY"</span> \
+  -H <span class="s">"Content-Type: application/json"</span> \
+  -d <span class="s">'{"chatId": "628123456789@c.us", "text": "Hello from NecxaWA"}'</span>
+
+<span class="c"># Individuals:  &lt;digits&gt;@c.us     Groups: &lt;groupId&gt;@g.us</span></pre></div>
+  </section>
+
+  <section style="padding:30px 0">
+    <h2 class="reveal" style="margin-bottom:14px">5. Send image / document</h2>
+    <div class="term reveal"><div class="term-bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="mono" style="color:#5b5b66;font-size:12px">bash</span></div><pre><span class="k">curl</span> -X POST http://localhost:2785/api/sessions/SESSION_ID/messages/send-image \
+  -H <span class="s">"X-API-Key: YOUR_API_KEY"</span> \
+  -H <span class="s">"Content-Type: application/json"</span> \
+  -d <span class="s">'{"chatId":"628123456789@c.us","url":"https://example.com/photo.jpg","caption":"Look at this"}'</span>
+
+<span class="c"># send-document works the same way (adds optional "filename").</span>
+<span class="c"># Or send base64 inline: {"chatId":"...","base64":"...","mimetype":"image/jpeg"}</span></pre></div>
+  </section>
+
+  <section style="padding:30px 0">
+    <h2 class="reveal" style="margin-bottom:14px">6. Webhooks (live events)</h2>
+    <div class="term reveal"><div class="term-bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="mono" style="color:#5b5b66;font-size:12px">bash</span></div><pre><span class="k">curl</span> -X POST http://localhost:2785/api/sessions/SESSION_ID/webhooks \
+  -H <span class="s">"X-API-Key: YOUR_API_KEY"</span> \
+  -H <span class="s">"Content-Type: application/json"</span> \
+  -d <span class="s">'{"url":"https://your-server.com/hook","events":["*"]}'</span>
+
+<span class="c"># Your URL now receives POSTs for inbound messages, session status, etc.</span></pre></div>
+  </section>
+
+  <section style="padding:30px 0">
+    <h2 class="reveal" style="margin-bottom:14px">7. JavaScript (fetch)</h2>
+    <div class="term reveal"><div class="term-bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="mono" style="color:#5b5b66;font-size:12px">javascript</span></div><pre><span class="k">const</span> BASE = <span class="s">"http://localhost:2785"</span>;
+<span class="k">const</span> KEY = <span class="s">"YOUR_API_KEY"</span>;
+<span class="k">const</span> headers = { <span class="s">"X-API-Key"</span>: KEY, <span class="s">"Content-Type"</span>: <span class="s">"application/json"</span> };
+
+<span class="c">// create session</span>
+<span class="k">let</span> s = <span class="k">await</span> <span class="k">fetch</span>(`${BASE}/api/sessions`,
+  { method: <span class="s">"POST"</span>, headers, body: JSON.stringify({ name: <span class="s">"my-bot"</span> }) })
+  .then(r =&gt; r.json());
+
+<span class="c">// send text</span>
+<span class="k">await</span> <span class="k">fetch</span>(`${BASE}/api/sessions/${s.id}/messages/send-text`, {
+  method: <span class="s">"POST"</span>, headers,
+  body: JSON.stringify({ chatId: <span class="s">"628123456789@c.us"</span>, text: <span class="s">"Hello!"</span> })
+});</pre></div>
+  </section>
+
+  <section style="padding:30px 0">
+    <h2 class="reveal" style="margin-bottom:14px">More real endpoints</h2>
+    <div class="cards">
+      <div class="card glass reveal"><h3>Sessions</h3><p class="mono" style="font-size:12.5px">GET /api/sessions<br>GET /api/sessions/{id}<br>POST /api/sessions/{id}/start<br>POST /api/sessions/{id}/stop<br>DELETE /api/sessions/{id}</p></div>
+      <div class="card glass reveal"><h3>Messages</h3><p class="mono" style="font-size:12.5px">send-audio · send-video<br>send-sticker · send-location<br>send-contact · send-poll<br>send-bulk · reply · react<br>edit · delete · forward</p></div>
+      <div class="card glass reveal"><h3>Data</h3><p class="mono" style="font-size:12.5px">GET /api/sessions/{id}/chats<br>GET /messages/{chatId}/history<br>GET /contacts/check/{number}<br>GET /api/sessions/{id}/groups</p></div>
+    </div>
+    <p class="reveal" style="color:var(--muted);font-size:14px;margin-top:20px">Full machine-readable spec: <span class="mono">openapi.json</span> in the <a href="https://github.com/rmyndharis/OpenWA" style="color:#ff6b7a">OpenWA repository</a> (160 routes).</p>
+  </section>
+</div>
+
+<footer><div class="wrap foot">
+  <span>NecxaWA — real console for the open-source OpenWA gateway (MIT).</span>
+  <span><a href="index.html">Home</a><a href="console.html">Console</a></span>
+</div></footer>
+<script src="js/main.js"></script>
+</body>
+</html>

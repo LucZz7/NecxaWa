@@ -27,12 +27,13 @@ aur **backend khud start ho jayega** (API key terminal me print hogi).
 Terminal me backend ne API key print ki hogi. Nahi dikhi to
 `backend/.env` file kholo — `API_MASTER_KEY=` ke aage wali value hi key hai.
 
-**Step 4 — Console connect karo:**
+**Step 4 — Console connect karo (1 tap + key paste):**
 
-1. Console kholo: https://luczz7.github.io/NecxaWa/console.html
-2. **Connection** tab me:
-   - API base URL = Step 2 wala Forwarded Address
-   - API key = Step 3 wali key
+1. Ye link kholo — `?api=` me apna Forwarded Address lagana:
+   `https://luczz7.github.io/NecxaWa/console.html?api=`**`TUMHARA-FORWARDED-ADDRESS`**
+   (jaise `...console.html?api=https://fancy-name-2785.app.github.dev`)
+   → URL khud bhar jayega
+2. **API key** wale box me Step 3 wali key paste karo
 3. **Save & Test** dabao — green "Backend online" aana chahiye
 
 **Step 5 — WhatsApp connect karo:**

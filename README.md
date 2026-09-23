@@ -25,7 +25,18 @@ OpenWA backend (YOU run this — Docker, port 2785)
 
 The backend cannot run on GitHub Pages (static hosting only). You run it yourself — free — on your own machine or any server.
 
-## Quickstart — backend 1 command me (free)
+## Quickstart
+
+**Option A — Phone se, bina PC ke (1-click cloud backend, free):**
+
+1. Phone ke browser me kholo: **https://codespaces.new/LucZz7/NecxaWa** → Create codespace
+2. PORTS tab me port **2785** ko **Public** karo → Forwarded Address copy karo
+3. Terminal me printed **API key** copy karo (ya `backend/.env` kholo)
+4. Console ke Connection me URL + key daalo → session banao → QR scan karo
+
+Poora guide: [`CLOUD_BACKEND.md`](CLOUD_BACKEND.md)
+
+**Option B — Apne PC/server pe backend (free):**
 
 Sabse aasan: **`backend/` folder** me ready-made setup hai.
 

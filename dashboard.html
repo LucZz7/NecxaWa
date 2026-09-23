@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — NecxaWA</title>
+<meta name="description" content="NecxaWA command center — sessions, chats, auto-reply bots, bulk messaging and logs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e8212d' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><path d='M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z'/></svg>">
+</head>
+<body>
+
+<div class="bg-orbs"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
+<div class="grid-overlay"></div>
+
+<div class="container dash-layout">
+  <!-- Sidebar -->
+  <aside class="dash-side glass">
+    <a href="index.html" class="logo"><span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span><span>Necxa<em>WA</em></span></a>
+    <button class="dash-link active" data-panel="overview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Overview</button>
+    <button class="dash-link" data-panel="chats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>Chats</button>
+    <button class="dash-link" data-panel="autoreply"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Auto-Reply</button>
+    <button class="dash-link" data-panel="bulk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>Bulk Sender</button>
+    <button class="dash-link" data-panel="scheduler"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 13.5"/></svg>Scheduler</button>
+    <button class="dash-link" data-panel="logs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>Logs</button>
+    <button class="dash-link" data-panel="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Settings</button>
+  </aside>
+
+  <!-- Main -->
+  <main class="dash-main">
+    <div class="dash-head">
+      <div><h1 id="panelTitle">Overview</h1><p style="color:var(--muted); font-size:14.5px">Welcome back — here's what's happening.</p></div>
+      <span class="status-pill"><span class="dot"></span>Session connected</span>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div data-panelbody="overview">
+      <div class="stat-grid">
+        <div class="stat-card glass"><div class="lb"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>Messages today</div><b>1,284</b></div>
+        <div class="stat-card glass"><div class="lb"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Auto-replies fired</div><b>342</b></div>
+        <div class="stat-card glass"><div class="lb"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13 17 22l-5-3-5 3 1.5-9"/></svg>Active sessions</div><b>3</b></div>
+        <div class="stat-card glass"><div class="lb"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>Contacts reached</div><b>8,412</b></div>
+      </div>
+      <div class="panel glass">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2.5"/><path d="M12 18h.01"/></svg>Connect a new session</h3>
+        <div class="qr-box">
+          <div class="qr-ph"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.4" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM21 14v.01M14 21v.01M18 18h3v3h-3z"/></svg></div>
+          <div style="flex:1; min-width:240px"><p style="color:var(--muted); font-size:14.5px; margin-bottom:16px">Scan this QR with WhatsApp on your phone <b style="color:#fff">(Settings → Linked devices)</b>. The session pairs in seconds and stays connected.</p><button class="btn btn-primary btn-sm" onclick="refreshQR(this)">Generate new QR</button></div>
+        </div>
+      </div>
+      <div class="panel glass">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Recent activity</h3>
+        <div class="log-row"><span class="lt">10:42:11</span><span class="log-ok">DELIVERED</span><span>Bulk batch #4821 — 500/500 sent</span></div>
+        <div class="log-row"><span class="lt">10:38:02</span><span class="log-info">AUTO-REPLY</span><span>Rule "pricing" matched for 919876543210</span></div>
+        <div class="log-row"><span class="lt">10:31:47</span><span class="log-info">WEBHOOK</span><span>message.received → https://api.you.com/wa-webhook (200)</span></div>
+        <div class="log-row"><span class="lt">10:24:19</span><span class="log-warn">SESSION</span><span>sales-inbox reconnected after 42s downtime</span></div>
+      </div>
+    </div>
+
+    <!-- CHATS -->
+    <div data-panelbody="chats" style="display:none">
+      <div class="panel glass">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>Live chats <span style="font-size:12.5px; color:var(--muted-2); font-weight:400">— synced via GET /api/sessions/{id}/chats</span></h3>
+        <div class="chat-row"><span class="avatar">RS</span><div><div class="nm">Rahul Sharma</div><div class="pv">Hi, I want pricing details for the Pro plan</div></div><span class="tm">10:41</span></div>
+        <div class="chat-row"><span class="avatar">AP</span><div><div class="nm">Ananya Patel</div><div class="pv">Thanks! The demo was super helpful</div></div><span class="tm">10:22</span></div>
+        <div class="chat-row"><span class="avatar">VK</span><div><div class="nm">Vikram Kumar</div><div class="pv">Can you send the invoice for September?</div></div><span class="tm">09:58</span></div>
+        <div class="chat-row"><span class="avatar">SN</span><div><div class="nm">Sneha Nair</div><div class="pv">Is bulk messaging available on Community?</div></div><span class="tm">09:15</span></div>
+      </div>
+      <div class="panel glass">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>Quick send <span style="font-size:12.5px; color:var(--muted-2); font-weight:400">— POST /messages/send-text</span></h3>
+        <div class="form-grid">
+          <div class="field"><label>Recipient number</label><input type="text" placeholder="919876543210"></div>
+          <div class="field"><label>Message</label><textarea placeholder="Type your message..."></textarea></div>
+          <button class="btn btn-primary btn-sm" style="justify-self:start" onclick="fakeSend(this)">Send message</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- AUTO-REPLY -->
+    <div data-panelbody="autoreply" style="display:none">
+      <div class="panel glass">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Automation rules <span style="font-size:12.5px; color:var(--muted-2); font-weight:400">— POST /automation-rules</span></h3>
+        <div class="rule-row"><code>pricing</code><span class="arrow">→</span><p>Our plans start at ₹999/month. Full details at necxawa.com</p><span class="toggle on" onclick="this.classList.toggle('on')"></span></div>
+        <div class="rule-row"><code>timing</code><span class="arrow">→</span><p>We're open Mon–Sat, 10am to 7pm IST.</p><span class="toggle on" onclick="this.classList.toggle('on')"></span></div>
+        <div class="rule-row"><code>demo</code><span class="arrow">→</span><p>Book your live demo here: necxawa.com/demo</p><span class="toggle" onclick="this.classList.toggle('on')"></span></div>
+      </div>
+      <div class="panel glass">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>New rule</h3>
+        <div class="form-grid">
+          <div class="field"><label>Trigger keyword</label><input type="text" placeholder="e.g. refund"></div>
+          <div class="field"><label>Auto reply</label><textarea placeholder="Reply text..."></textarea></div>
+          <button class="btn btn-primary btn-sm" style="justify-self:start" onclick="fakeSend(this)">Create rule</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BULK -->
+    <div data-panelbody="bulk" style="display:none">
+      <div class="panel glass">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>Bulk campaign <span style="font-size:12.5px; color:var(--muted-2); font-weight:400">— POST /messages/send-bulk</span></h3>
+        <div class="form-grid">
+          <div class="field"><label>Recipients (one number per line)</label><textarea placeholder="919876543210&#10;919876543211&#10;919876543212"></textarea></div>
+          <div class="field"><label>Message</label><textarea placeholder="Festive offer is live! ..."></textarea></div>
+          <button class="btn btn-primary btn-sm" style="justify-self:start" onclick="startBulk(this)">Launch campaign</button>
+          <div class="progress"><i id="bulkBar"></i></div>
+          <p style="font-size:13px; color:var(--muted-2)" id="bulkLabel">Ready — rate limited to 20 messages/minute for safety.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCHEDULER -->
+    <div data-panelbody="scheduler" style="display:none">
+      <div class="panel glass">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 13.5"/></svg>Schedule a message</h3>
+        <div class="form-grid">
+          <div class="field"><label>Recipient number</label><input type="text" placeholder="919876543210"></div>
+          <div class="field"><label>Message</label><textarea placeholder="Type your message..."></textarea></div>
+          <div class="field"><label>Send at</label><input type="datetime-local" style="color-scheme:dark"></div>
+          <button class="btn btn-primary btn-sm" style="justify-self:start" onclick="fakeSend(this)">Schedule</button>
+        </div>
+      </div>
+      <div class="panel glass">
+        <h3>Scheduled queue</h3>
+        <div class="rule-row"><code>Tomorrow 10:00</code><span class="arrow">→</span><p>Festival greeting to 240 contacts</p><span class="toggle on" onclick="this.classList.toggle('on')"></span></div>
+        <div class="rule-row"><code>Fri 18:30</code><span class="arrow">→</span><p>Payment reminder to 38 contacts</p><span class="toggle on" onclick="this.classList.toggle('on')"></span></div>
+      </div>
+    </div>
+
+    <!-- LOGS -->
+    <div data-panelbody="logs" style="display:none">
+      <div class="panel glass">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Event logs</h3>
+        <div class="log-row"><span class="lt">10:42:11</span><span class="log-ok">DELIVERED</span><span>send-text → 919876543210 (msg_8f2k1)</span></div>
+        <div class="log-row"><span class="lt">10:41:56</span><span class="log-info">RECEIVED</span><span>message.received from 919876543210</span></div>
+        <div class="log-row"><span class="lt">10:38:02</span><span class="log-info">AUTO-REPLY</span><span>rule "pricing" → reply sent in 0.4s</span></div>
+        <div class="log-row"><span class="lt">10:31:47</span><span class="log-info">WEBHOOK</span><span>POST https://api.you.com/wa-webhook → 200 (86ms)</span></div>
+        <div class="log-row"><span class="lt">10:24:19</span><span class="log-warn">SESSION</span><span>sales-inbox reconnected after 42s</span></div>
+        <div class="log-row"><span class="lt">10:12:03</span><span class="log-ok">DELIVERED</span><span>send-image → 919876543211 (msg_8f1q9)</span></div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div data-panelbody="settings" style="display:none">
+      <div class="panel glass">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.2 4.2l2.8 2.8M17 17l2.8 2.8M1 12h4M19 12h4M4.2 19.8 7 17M17 7l2.8-2.8"/></svg>API keys</h3>
+        <div class="rule-row"><code>nwa_live_9f3k…</code><span class="arrow">→</span><p>Operator · sessions: sales-inbox, support</p><span class="toggle on" onclick="this.classList.toggle('on')"></span></div>
+        <div class="rule-row"><code>nwa_view_2md8…</code><span class="arrow">→</span><p>Viewer · all sessions, read-only</p><span class="toggle on" onclick="this.classList.toggle('on')"></span></div>
+        <button class="btn btn-ghost btn-sm" onclick="fakeSend(this)" style="margin-top:8px">Generate new key</button>
+      </div>
+      <div class="panel glass">
+        <h3>Webhook URL</h3>
+        <div class="form-grid">
+          <div class="field"><label>Events endpoint</label><input type="text" value="https://api.you.com/wa-webhook"></div>
+          <button class="btn btn-primary btn-sm" style="justify-self:start" onclick="fakeSend(this)">Save webhook</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>

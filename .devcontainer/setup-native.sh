@@ -26,6 +26,46 @@ if [ ! -f "$BK/.env" ]; then
   chmod 600 "$BK/.env"
 fi
 
+echo "== [3b/4] key ko secret gist me daalo (console one-tap link ke liye) =="
+if [ -n "${GITHUB_TOKEN:-}" ] && [ -n "${CODESPACE_NAME:-}" ]; then
+  API_KEY="$(grep '^API_MASTER_KEY=' "$BK/.env" | cut -d= -f2)"
+  CS_URL="https://${CODESPACE_NAME}-2785.app.github.dev"
+  ( GITHUB_TOKEN="$GITHUB_TOKEN" CODESPACE_NAME="$CODESPACE_NAME" API_KEY="$API_KEY" CS_URL="$CS_URL" python3 - <<'PYEOF'
+import json, os, urllib.request
+token = os.environ["GITHUB_TOKEN"]
+name = os.environ["CODESPACE_NAME"]
+content = f"NECXAWA_API_KEY={os.environ['API_KEY']}\nCODESPACE_NAME={name}\nAPI_URL={os.environ['CS_URL']}\n"
+desc = f"NecxaWA backend key - {name}"
+def call(method, url, data=None):
+    r = urllib.request.Request(url, data=json.dumps(data).encode() if data else None, method=method)
+    r.add_header("Authorization", f"Bearer {token}")
+    r.add_header("Accept", "application/vnd.github+json")
+    r.add_header("X-GitHub-Api-Version", "2022-11-28")
+    try:
+        with urllib.request.urlopen(r, timeout=20) as resp:
+            return resp.status, json.loads(resp.read())
+    except Exception as e:
+        print("gist api note:", str(e)[:120])
+        return 0, {}
+st, gists = call("GET", "https://api.github.com/gists?per_page=100")
+gid = None
+if st == 200:
+    for g in gists:
+        if g.get("description") == desc:
+            gid = g["id"]; break
+payload = {"description": desc, "public": False, "files": {"necxawa-backend-key.txt": {"content": content}}}
+if gid:
+    st, _ = call("PATCH", f"https://api.github.com/gists/{gid}", payload)
+    print("gist updated:", st)
+else:
+    st, out = call("POST", "https://api.github.com/gists", payload)
+    print("gist created:", st, out.get("html_url", ""))
+PYEOF
+  ) || echo "(gist step me dikkat aayi — key .backend/.env me safe hai)"
+else
+  echo "(gist skip: token/name nahi mila — key .backend/.env me safe hai)"
+fi
+
 echo "== [4/4] install + build =="
 # better-sqlite3 native build fix: node headers pehle se cache kar do
 NODE_VER=$(node --version | tr -d 'v')

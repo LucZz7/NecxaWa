@@ -67,8 +67,18 @@
         <div id="conn-result" style="margin-top:18px"></div>
       </div>
       <div class="panel glass">
+        <h2>Apna khud ka backend (optional)</h2>
+        <p class="desc">Agar tumne apne GitHub Codespace me backend chalaya hai (wahan WhatsApp connect hota hai), to uska <b>public URL</b> aur <b>API key</b> yahan daalo. Ye relay se zyada powerful hai — poora WhatsApp session yahin chalega.</p>
+        <div class="field"><label>Backend URL (https://...app.github.dev)</label><input id="api-base" class="mono" placeholder="https://...-2785.app.github.dev"></div>
+        <div class="field"><label>API key (X-API-Key)</label><input id="api-key" type="password" class="mono" placeholder="codespace ke .backend/.env se"></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-red" id="save-direct">Use direct backend</button>
+          <button class="btn btn-ghost" id="clear-direct">Back to relay</button>
+        </div>
+      </div>
+      <div class="panel glass">
         <h2>How it works</h2>
-        <p class="desc">Ye console tumhare private relay channel ke through backend se judta hai. Tumhara WhatsApp session backend pe chalega — QR scan ke baad session yahin se manage hoga: messages bhejo, chats dekho, sab kuch.</p>
+        <p class="desc">Ye console tumhare private relay channel ke through backend se judta hai. <b>WhatsApp connect karne ke liye</b> apna khud ka backend chalao — <b>1-click codespace</b>: <a href="https://codespaces.new/LucZz7/NecxaWa" target="_blank" rel="noopener" style="color:#ff6b6b;font-weight:600">yahan tap karke codespace banao</a>, 2-3 min ruko (backend khud chal padega), phir uska public URL + API key upar <b>direct backend</b> me daalo. Uske baad Sessions me QR aayega — scan karte hi WhatsApp connected.</p>
       </div>
     </div>
 

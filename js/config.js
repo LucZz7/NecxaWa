@@ -25,6 +25,13 @@
       localStorage.setItem("necxawa_api_base", (base || DEFAULT_BASE).replace(/\/+$/, ""));
       localStorage.setItem("necxawa_api_key", key || "");
     },
+    directEnabled() {
+      return localStorage.getItem("necxawa_direct") === "1";
+    },
+    setDirect(on) {
+      if (on) localStorage.setItem("necxawa_direct", "1");
+      else localStorage.removeItem("necxawa_direct");
+    },
     getSessionId() {
       return localStorage.getItem("necxawa_session_id") || "";
     },

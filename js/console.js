@@ -14,17 +14,18 @@
     el.scrollTop = el.scrollHeight;
   }
 
+  /* Relay transport: every call goes through the private Firebase relay
+     channel to the managed backend. Returns {status, data}; throws on
+     transport failure or backend error status. */
   async function api(method, path, body) {
-    const base = window.NECXAWA.getApiBase();
-    const key = window.NECXAWA.getApiKey();
-    const res = await fetch(base + path, {
-      method,
-      headers: Object.assign({ "Content-Type": "application/json" }, key ? { "X-API-Key": key } : {}),
-      body: body ? JSON.stringify(body) : undefined,
-    });
-    let data = null;
-    try { data = await res.json(); } catch (e) { /* empty body */ }
-    if (!res.ok) {
+    let res;
+    try {
+      res = await window.NECXAWA_RELAY.request(method, path, body);
+    } catch (e) {
+      throw new Error(e && e.message ? e.message : "Relay error");
+    }
+    const data = res.data;
+    if (res.status < 200 || res.status >= 300) {
       const msg = (data && (data.message || data.error)) || `HTTP ${res.status}`;
       throw new Error(Array.isArray(msg) ? msg.join("; ") : String(msg));
     }
@@ -50,18 +51,26 @@
   });
 
   /* ---------- connection ---------- */
+  function setNavStatus(ok) {
+    const d = $("nav-dot"), t = $("nav-status");
+    if (d) d.style.background = ok ? "#22c55e" : "#e11d2e";
+    if (d) d.style.boxShadow = ok ? "0 0 12px #22c55e" : "0 0 12px #e11d2e";
+    if (t) t.textContent = ok ? "Backend online" : "Console";
+  }
+
   async function testConnection() {
     const out = $("conn-result");
-    out.innerHTML = `<span class="status-dot warn"></span>Connecting...`;
+    out.innerHTML = `<span class="status-dot warn"></span>Connecting via private relay...`;
     try {
-      const h = await api("GET", "/api/health/ready");
-      out.innerHTML = `<div class="alert alert-green"><span class="status-dot ok"></span>Backend online — ${esc(h.status || "ready")}. API key accepted.</div>`;
-      log("Connected to " + window.NECXAWA.getApiBase(), "ok2");
+      const h = await window.NECXAWA_RELAY.ping();
+      const st = (h.data && h.data.status) || "ready";
+      out.innerHTML = `<div class="alert alert-green"><span class="status-dot ok"></span>Backend online — ${esc(st)}. Private relay channel working.</div>`;
+      setNavStatus(true);
+      log("Relay connected — backend is online.", "ok2");
     } catch (e) {
+      setNavStatus(false);
       out.innerHTML = `<div class="alert alert-red"><span class="status-dot bad"></span>Connection failed: ${esc(e.message)}<br><br>
-        Backend abhi chal nahi raha. 1-command setup yahan hai:<br>
-        <a href="https://github.com/LucZz7/NecxaWa/tree/main/backend" target="_blank" rel="noopener" style="color:#ff6b6b;font-weight:600">backend setup guide kholo</a>
-        — <span class="mono">start.sh</span> / <span class="mono">start.bat</span> chalao, phir URL + key yahan daalo.</div>`;
+        Apna <b>private access link</b> dobara paste karke <b>Save &amp; Test</b> dabao.</div>`;
       log("Connection failed: " + e.message, "err");
     }
   }
@@ -281,32 +290,13 @@
     document.querySelector(`.side button[data-tab="${name}"]`).click();
   }
 
-  /* ---------- wire up ---------- */
-  // Auto-discover the managed backend URL (kept fresh in backend-url.txt on the repo).
-  // Skipped when ?api= is given or the user already configured a non-local backend.
-  async function autoDiscoverBackend() {
-    try {
-      if (new URLSearchParams(location.search).get("api")) return;
-      const cur = window.NECXAWA.getApiBase();
-      if (cur && !/localhost|127\.0\.0\.1/.test(cur)) return;
-      const r = await fetch("https://raw.githubusercontent.com/LucZz7/NecxaWa/main/backend-url.txt", { cache: "no-store" });
-      if (!r.ok) return;
-      const url = (await r.text()).trim().replace(/\/+$/, "");
-      if (/^https:\/\//i.test(url)) {
-        $("api-base").value = url;
-        window.NECXAWA.save(url, window.NECXAWA.getApiKey());
-        log("Backend URL auto-detected: " + url, "inf");
-      }
-    } catch (e) { /* offline — user enters the URL manually */ }
-  }
-
   document.addEventListener("DOMContentLoaded", () => {
-    $("api-base").value = window.NECXAWA.getApiBase();
-    $("api-key").value = window.NECXAWA.getApiKey();
-    autoDiscoverBackend();
     $("save-conn").onclick = () => {
-      window.NECXAWA.save($("api-base").value.trim(), $("api-key").value.trim());
-      log("Connection settings saved.", "inf");
+      try {
+        window.NECXAWA_RELAY.setSecret($("relay-link").value);
+      } catch (e) { alert(e.message); return; }
+      $("relay-link").value = "";
+      log("Private link saved.", "inf");
       testConnection();
     };
     $("test-conn").onclick = testConnection;
@@ -318,5 +308,7 @@
     $("wh-create").onclick = createWebhook;
     refreshSendSessions();
     log("NecxaWA console ready. Configure your backend connection to begin.", "inf");
+    // private link (?t=...) already known? test the relay right away
+    if (window.NECXAWA_RELAY.hasSecret()) testConnection();
   });
 })();

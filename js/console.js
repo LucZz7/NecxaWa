@@ -16,13 +16,31 @@
 
   /* Relay transport: every call goes through the private Firebase relay
      channel to the managed backend. Returns {status, data}; throws on
-     transport failure or backend error status. */
+     transport failure or backend error status.
+     Direct mode: if the user configured their own backend URL, use fetch. */
+  function isDirectMode() {
+    const b = window.NECXAWA.getApiBase();
+    return b && !/localhost|127\.0\.0\.1/.test(b) && window.NECXAWA.directEnabled();
+  }
   async function api(method, path, body) {
     let res;
-    try {
-      res = await window.NECXAWA_RELAY.request(method, path, body);
-    } catch (e) {
-      throw new Error(e && e.message ? e.message : "Relay error");
+    if (isDirectMode()) {
+      const base = window.NECXAWA.getApiBase();
+      const key = window.NECXAWA.getApiKey();
+      const r = await fetch(base + path, {
+        method,
+        headers: Object.assign({ "Content-Type": "application/json" }, key ? { "X-API-Key": key } : {}),
+        body: body ? JSON.stringify(body) : undefined,
+      });
+      let data = null;
+      try { data = await r.json(); } catch (e) { /* empty */ }
+      res = { status: r.status, data };
+    } else {
+      try {
+        res = await window.NECXAWA_RELAY.request(method, path, body);
+      } catch (e) {
+        throw new Error(e && e.message ? e.message : "Relay error");
+      }
     }
     const data = res.data;
     if (res.status < 200 || res.status >= 300) {
@@ -60,17 +78,24 @@
 
   async function testConnection() {
     const out = $("conn-result");
-    out.innerHTML = `<span class="status-dot warn"></span>Connecting via private relay...`;
+    const direct = isDirectMode();
+    out.innerHTML = `<span class="status-dot warn"></span>${direct ? "Connecting to your backend..." : "Connecting via private relay..."}`;
     try {
-      const h = await window.NECXAWA_RELAY.ping();
-      const st = (h.data && h.data.status) || "ready";
-      out.innerHTML = `<div class="alert alert-green"><span class="status-dot ok"></span>Backend online — ${esc(st)}. Private relay channel working.</div>`;
+      let st;
+      if (direct) {
+        const h = await api("GET", "/api/health/ready");
+        st = h.status || "ready";
+      } else {
+        const h = await window.NECXAWA_RELAY.ping();
+        st = (h.data && h.data.status) || "ready";
+      }
+      out.innerHTML = `<div class="alert alert-green"><span class="status-dot ok"></span>Backend online — ${esc(st)}. ${direct ? "Direct backend mode." : "Private relay channel working."}</div>`;
       setNavStatus(true);
-      log("Relay connected — backend is online.", "ok2");
+      log(direct ? "Direct backend connected." : "Relay connected — backend is online.", "ok2");
     } catch (e) {
       setNavStatus(false);
       out.innerHTML = `<div class="alert alert-red"><span class="status-dot bad"></span>Connection failed: ${esc(e.message)}<br><br>
-        Apna <b>private access link</b> dobara paste karke <b>Save &amp; Test</b> dabao.</div>`;
+        ${direct ? "URL aur key dobara check karo." : "Apna <b>private access link</b> dobara paste karke <b>Save &amp; Test</b> dabao."}</div>`;
       log("Connection failed: " + e.message, "err");
     }
   }
@@ -300,6 +325,26 @@
       testConnection();
     };
     $("test-conn").onclick = testConnection;
+    $("save-direct").onclick = () => {
+      const base = $("api-base").value.trim().replace(/\/+$/, "");
+      const key = $("api-key").value.trim();
+      if (!/^https:\/\//i.test(base)) return alert("Backend URL https:// se shuru hona chahiye (codespace ka public URL).");
+      if (key.length < 8) return alert("API key dalo (codespace ke .backend/.env se).");
+      window.NECXAWA.save(base, key);
+      window.NECXAWA.setDirect(true);
+      $("api-key").value = "";
+      log("Direct backend saved.", "inf");
+      testConnection();
+    };
+    $("clear-direct").onclick = () => {
+      window.NECXAWA.setDirect(false);
+      log("Back to relay mode.", "inf");
+      testConnection();
+    };
+    // pre-fill direct fields if saved
+    if (window.NECXAWA.directEnabled()) {
+      $("api-base").value = window.NECXAWA.getApiBase();
+    }
     $("create-session").onclick = createSession;
     $("send-btn").onclick = sendMessage;
     $("send-type").onchange = (e) => $("media-row").classList.toggle("hidden", e.target.value === "text");

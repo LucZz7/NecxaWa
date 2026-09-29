@@ -52,18 +52,14 @@
     <!-- CONNECTION -->
     <div class="tab fade" id="tab-connection">
       <div class="panel glass" style="border-color:rgba(255,60,60,.35)">
-        <h2>Phone se chala rahe ho? PC nahi hai?</h2>
-        <p class="desc">1 click me cloud me backend chalao — free. Neeche wali link phone ke browser me kholo, codespace banao, port 2785 ko <b>Public</b> karo, phir uska URL + API key yahan daalo. Poora guide repo me hai.</p>
-        <div style="display:flex;gap:10px;flex-wrap:wrap">
-          <a class="btn btn-red" href="https://codespaces.new/LucZz7/NecxaWa" target="_blank" rel="noopener" style="text-decoration:none">1-Click Cloud Backend</a>
-          <a class="btn btn-ghost" href="https://github.com/LucZz7/NecxaWa/blob/main/CLOUD_BACKEND.md" target="_blank" rel="noopener" style="text-decoration:none">Step-by-step guide</a>
-        </div>
+        <h2>Managed backend — zero setup</h2>
+        <p class="desc">Tumhara NecxaWA backend already cloud me chal raha hai. Bas apna <b>private access link</b> neeche paste karo (ya wahi link kholo jo tumhe diya gaya tha) — uske baad ye console seedha backend se baat karega. Koi URL ya API key yaad rakhne ki zaroorat nahi.</p>
+        <p class="desc" style="color:#ffb3b3">Ye link sirf tumhara hai — kisi ke saath share mat karna.</p>
       </div>
       <div class="panel glass">
-        <h2>Backend connection</h2>
-        <p class="desc">Point this console at your OpenWA backend. Everything is stored only in this browser — nothing leaves your machine except API calls to your own server.</p>
-        <div class="field"><label>API base URL</label><input id="api-base" class="mono" placeholder="http://localhost:2785"></div>
-        <div class="field"><label>API key (X-API-Key)</label><input id="api-key" type="password" class="mono" placeholder="paste the key from docker logs"></div>
+        <h2>Private access</h2>
+        <p class="desc">Apna private access link paste karo aur <b>Save &amp; Test</b> dabao.</p>
+        <div class="field"><label>Private access link</label><input id="relay-link" class="mono" placeholder="paste your private link here"></div>
         <div style="display:flex;gap:10px;flex-wrap:wrap">
           <button class="btn btn-red" id="save-conn">Save &amp; Test</button>
           <button class="btn btn-ghost" id="test-conn">Test only</button>
@@ -71,15 +67,8 @@
         <div id="conn-result" style="margin-top:18px"></div>
       </div>
       <div class="panel glass">
-        <h2>How to get these values</h2>
-        <p class="desc">On the machine running OpenWA:</p>
-        <div class="term"><div class="term-bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div><pre><span class="c"># 1. start the backend (from the OpenWA repo)</span>
-<span class="k">docker</span> compose up -d
-
-<span class="c"># 2. copy the first-boot admin API key</span>
-<span class="k">docker</span> logs openwa-api 2&gt;&amp;1 | <span class="k">grep</span> -i <span class="s">"api key"</span>
-
-<span class="c"># 3. backend URL is http://&lt;that-machine&gt;:2785</span></pre></div>
+        <h2>How it works</h2>
+        <p class="desc">Ye console tumhare private relay channel ke through backend se judta hai. Tumhara WhatsApp session backend pe chalega — QR scan ke baad session yahin se manage hoga: messages bhejo, chats dekho, sab kuch.</p>
       </div>
     </div>
 
@@ -164,6 +153,7 @@
 </div>
 
 <script src="js/config.js"></script>
+<script src="js/relay.js"></script>
 <script src="js/console.js"></script>
 </body>
 </html>

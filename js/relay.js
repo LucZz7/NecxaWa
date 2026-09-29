@@ -40,12 +40,16 @@
     if (!secret) throw new Error("No private link configured — paste your private access link on the Connection tab.");
     const id = "r" + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
     const base = `${DB}/necxwa_relay/${secret}`;
+    // body travels as a JSON string (bodyS) so the relay store never mangles
+    // empty arrays/objects; absent bodyS means "no body".
+    const payload = { v: 1, id, method, path };
+    if (body !== undefined) payload.bodyS = JSON.stringify(body);
     let putRes;
     try {
       putRes = await fetch(`${base}/req/${id}.json`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ v: 1, id, method, path, body: body === undefined ? null : body }),
+        body: JSON.stringify(payload),
       });
     } catch (e) {
       throw new Error("Relay unreachable — check your internet connection.");
@@ -59,9 +63,11 @@
         const r = await fetch(`${base}/res/${id}.json`, { cache: "no-store" });
         if (r.ok) j = await r.json();
       } catch (e) { /* transient network blip — keep polling */ }
-      if (j && j.id === id) {
+      if (j && j.id === id && typeof j.dataS === "string") {
         fetch(`${base}/res/${id}.json`, { method: "DELETE" }).catch(() => {});
-        return { status: j.status, data: j.data };
+        let data = null;
+        try { data = JSON.parse(j.dataS); } catch (e) { data = null; }
+        return { status: j.status, data };
       }
     }
     throw new Error("Backend timeout — no answer in 45s. The backend may be restarting; wait a bit and try again.");

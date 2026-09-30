@@ -1,4 +1,4 @@
-/* NecxaWA Console - real OpenWA REST API client.
+/* NecxChat Console - real OpenWA REST API client.
    Base URL + API key are configured on the Connection tab and stored in localStorage.
    All requests use the X-API-Key header (OpenWA auth scheme). */
 (function () {
@@ -356,9 +356,17 @@
     // load AI reply config when its tab opens
     document.querySelector('[data-tab="aireply"]').addEventListener("click", loadAireply);
     refreshSendSessions();
-    log("NecxaWA console ready. Configure your backend connection to begin.", "inf");
-    // private link (?t=...) already known? test the relay right away
-    if (window.NECXAWA_RELAY.hasSecret()) testConnection();
+    log("NecxChat console ready. Configure your backend connection to begin.", "inf");
+    // one-tap link (?api=/?key=) or private link (?t=...) already known?
+    // auto-test right away, and jump to Sessions on success
+    const autoMode = window.NECXAWA_RELAY.hasSecret() || isDirectMode();
+    if (autoMode) {
+      testConnection().then(() => {
+        // if backend is online, take the user straight to Sessions (QR flow)
+        const ok = document.querySelector("#conn-result .alert-green");
+        if (ok) switchTab("sessions");
+      });
+    }
   });
 
   /* ---------- AI auto-reply (codespace direct mode only) ---------- */

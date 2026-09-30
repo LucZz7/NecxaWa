@@ -351,9 +351,96 @@
     $("load-chats").onclick = loadChats;
     $("check-btn").onclick = checkNumber;
     $("wh-create").onclick = createWebhook;
+    $("aireply-toggle").onclick = toggleAireply;
+    $("aireply-save").onclick = saveAireply;
+    // load AI reply config when its tab opens
+    document.querySelector('[data-tab="aireply"]').addEventListener("click", loadAireply);
     refreshSendSessions();
     log("NecxaWA console ready. Configure your backend connection to begin.", "inf");
     // private link (?t=...) already known? test the relay right away
     if (window.NECXAWA_RELAY.hasSecret()) testConnection();
   });
+
+  /* ---------- AI auto-reply (codespace direct mode only) ---------- */
+  function aireplyBase() {
+    if (!isDirectMode()) return null;
+    const b = window.NECXAWA.getApiBase();
+    // https://<name>-2785.app.github.dev -> https://<name>-2786.app.github.dev
+    return b.replace(/-2785(\.|$)/, "-2786$1");
+  }
+  async function loadAireply() {
+    const st = $("aireply-status"), btn = $("aireply-toggle"), state = $("aireply-state");
+    const base = aireplyBase();
+    if (!base) {
+      st.innerHTML = `<div class="alert alert-red">AI Reply ke liye <b>direct backend</b> (codespace) chahiye. Pehle Connection tab me apna codespace backend set karo.</div>`;
+      btn.textContent = "Unavailable"; btn.disabled = true;
+      return;
+    }
+    btn.disabled = false;
+    st.innerHTML = `<span class="status-dot warn"></span>Loading...`;
+    try {
+      const r = await fetch(base + "/api/autoreply/config");
+      const c = await r.json();
+      btn.textContent = c.enabled ? "Turn OFF" : "Turn ON";
+      state.textContent = c.enabled ? "● ON — AI jawab de raha hai" : "○ OFF";
+      state.style.color = c.enabled ? "#4ade80" : "#888";
+      $("aireply-delay").value = c.replyDelaySec || 20;
+      if (c.systemPrompt) $("aireply-prompt").value = c.systemPrompt;
+      st.innerHTML = c.hasKey
+        ? `<div class="alert alert-green"><span class="status-dot ok"></span>Gemini API key set hai.</div>`
+        : `<div class="alert alert-red"><span class="status-dot bad"></span>Gemini API key nahi dali — upar link se banao aur yahan paste karo.</div>`;
+      btn.dataset.enabled = c.enabled ? "1" : "0";
+      log("AI reply config loaded.", "inf");
+    } catch (e) {
+      st.innerHTML = `<div class="alert alert-red">Auto-reply server nahi mil raha: ${esc(e.message)}<br>Codespace me <b>bash .devcontainer/start-native.sh</b> dobara chalao.</div>`;
+      btn.textContent = "Retry"; btn.dataset.enabled = "0";
+    }
+  }
+  async function toggleAireply() {
+    const base = aireplyBase();
+    if (!base) return;
+    const btn = $("aireply-toggle");
+    const to = btn.dataset.enabled !== "1";
+    btn.disabled = true;
+    try {
+      const r = await fetch(base + "/api/autoreply/config", {
+        method: "POST", headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ enabled: to }),
+      });
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      log("AI reply " + (to ? "ON" : "OFF"), "ok2");
+    } catch (e) {
+      alert("Failed: " + e.message);
+    }
+    btn.disabled = false;
+    loadAireply();
+  }
+  async function saveAireply() {
+    const base = aireplyBase();
+    if (!base) return;
+    const out = $("aireply-result");
+    const key = $("aireply-key").value.trim();
+    const delay = Math.max(5, Math.min(120, parseInt($("aireply-delay").value, 10) || 20));
+    const prompt = $("aireply-prompt").value.trim();
+    if (key && !/^AIza[0-9A-Za-z_-]{20,}$/.test(key)) {
+      out.innerHTML = `<div class="alert alert-red">Ye Gemini API key jaisi nahi lag rahi (AIza... se shuru hoti hai). Dobara check karo.</div>`;
+      return;
+    }
+    out.innerHTML = `<span class="status-dot warn"></span>Saving...`;
+    try {
+      const body = { replyDelaySec: delay, systemPrompt: prompt };
+      if (key) body.geminiApiKey = key;
+      const r = await fetch(base + "/api/autoreply/config", {
+        method: "POST", headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(body),
+      });
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      $("aireply-key").value = "";
+      out.innerHTML = `<div class="alert alert-green"><span class="status-dot ok"></span>Saved! ${key ? "API key set ho gayi." : ""}</div>`;
+      log("AI reply settings saved.", "ok2");
+    } catch (e) {
+      out.innerHTML = `<div class="alert alert-red">Save failed: ${esc(e.message)}</div>`;
+    }
+    loadAireply();
+  }
 })();

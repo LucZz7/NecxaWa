@@ -1,13 +1,15 @@
-/* NecxaWA config - backend connection stored locally in the browser.
+/* NecxChat config - backend connection stored locally in the browser.
    Tip: console.html?api=https://xxx&key=yyy pre-fills the URL + key. */
 (function () {
   const DEFAULT_BASE = "http://localhost:2785";
   // ?api= / ?key= query params pre-fill + save the connection (one-tap setup links)
+  // ?api= present = direct backend mode ON (no relay needed)
   try {
     const qp = new URLSearchParams(location.search);
     const q = qp.get("api");
     if (q && /^https?:\/\//i.test(q)) {
       localStorage.setItem("necxawa_api_base", q.replace(/\/+$/, ""));
+      localStorage.setItem("necxawa_direct", "1");
     }
     const k = qp.get("key");
     if (k && k.trim().length >= 8) {

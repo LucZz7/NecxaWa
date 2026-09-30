@@ -191,6 +191,20 @@
       log("Session created: " + s.name + " (" + s.status + ")", "ok2");
       $("new-session-name").value = "";
       window.NECXAWA.setSessionId(s.id);
+      // Auto-start the session so QR is ready immediately (one-click flow)
+      try {
+        await api("POST", `/api/sessions/${encodeURIComponent(s.id)}/start`);
+        log("Session auto-started, waiting for QR...", "inf");
+        // Wait for qr_ready (up to 60s)
+        for (let i = 0; i < 12; i++) {
+          await new Promise((r) => setTimeout(r, 5000));
+          try {
+            const st = await api("GET", `/api/sessions/${encodeURIComponent(s.id)}`);
+            const status = st.status || (st.data && st.data.status);
+            if (status === "qr_ready" || status === "ready" || status === "connected") break;
+          } catch {}
+        }
+      } catch (e) { log("Auto-start note: " + e.message, "err"); }
       await loadSessions();
       showPairing(s.id, s.name);
     } catch (e) { alert("Create failed: " + e.message); log("Create failed: " + e.message, "err"); }

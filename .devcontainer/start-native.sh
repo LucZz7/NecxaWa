@@ -25,3 +25,13 @@ echo ""
 echo " Key .backend/.env file me bhi saved hai."
 echo " Logs: .backend/backend.log"
 echo "=================================================="
+
+# AI auto-reply poller (port 2786) — backend ke saath chalega
+if pgrep -f "[a]uto-reply[.]js" > /dev/null 2>&1; then
+  echo "Auto-reply pehle se chal raha hai."
+else
+  set -a; . "$BK/.env"; set +a
+  cd "$ROOT/.devcontainer"
+  nohup node auto-reply.js > "$BK/autoreply.log" 2>&1 &
+  echo "Auto-reply poller start ho gaya (port 2786)."
+fi

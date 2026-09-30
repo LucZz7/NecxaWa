@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>API Docs — NecxaWA</title>
+<title>API Docs — NecxChat</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
@@ -56,7 +56,7 @@
     <div class="term reveal"><div class="term-bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="mono" style="color:#5b5b66;font-size:12px">bash</span></div><pre><span class="k">curl</span> -X POST http://localhost:2785/api/sessions/SESSION_ID/messages/send-text \
   -H <span class="s">"X-API-Key: YOUR_API_KEY"</span> \
   -H <span class="s">"Content-Type: application/json"</span> \
-  -d <span class="s">'{"chatId": "628123456789@c.us", "text": "Hello from NecxaWA"}'</span>
+  -d <span class="s">'{"chatId": "628123456789@c.us", "text": "Hello from NecxChat"}'</span>
 
 <span class="c"># Individuals:  &lt;digits&gt;@c.us     Groups: &lt;groupId&gt;@g.us</span></pre></div>
   </section>
@@ -112,9 +112,20 @@
 </div>
 
 <footer><div class="wrap foot">
-  <span>NecxaWA — real console for the open-source OpenWA gateway (MIT).</span>
+  <span>NecxChat — real console for the open-source OpenWA gateway (MIT).</span>
   <span><a href="index.html">Home</a><a href="console.html">Console</a></span>
 </div></footer>
 <script src="js/main.js"></script>
+
+<a href="https://t.me/i_necxy" target="_blank" rel="noopener" class="necxy-dev">NECXY DEVELOPER</a>
+<style>
+.necxy-dev{
+  display:block;text-align:center;margin:40px auto 24px;padding:8px;
+  font-size:11px;letter-spacing:4px;color:#fff;
+  opacity:.28;filter:blur(.4px);text-decoration:none;
+  transition:opacity .3s,filter .3s;user-select:none;
+}
+.necxy-dev:hover{opacity:.85;filter:blur(0)}
+</style>
 </body>
 </html>

@@ -46,6 +46,9 @@
     <button data-tab="logs">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>
       Logs</button>
+    <button data-tab="aireply">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h.01M15 9h.01M9 15c1.5 1 4.5 1 6 0M12 4v2M12 18v2M4 12h2M18 12h2"/></svg>
+      AI Reply</button>
   </aside>
 
   <div class="main">
@@ -157,6 +160,29 @@
         <h2>Console log</h2>
         <p class="desc">Every API call this console makes is logged here for debugging.</p>
         <div class="log" id="log"></div>
+      </div>
+    </div>
+    <div class="tab hidden" id="tab-aireply">
+      <div class="panel glass">
+        <h2>AI Auto-Reply</h2>
+        <p class="desc">Jab tum offline ya busy ho, AI tumhare WhatsApp messages ka jawab khud dega — <b>jis language me message aayega, usi me jawab</b>. Neeche <b>ON</b> karo aur apni <b>Gemini API key</b> dalo (free, 2 min me banti hai).</p>
+        <div id="aireply-status" style="margin-bottom:16px"></div>
+        <div class="field">
+          <label>Auto-reply</label>
+          <div style="display:flex;gap:10px;align-items:center">
+            <button class="btn btn-red" id="aireply-toggle">Loading...</button>
+            <span class="desc" id="aireply-state" style="margin:0"></span>
+          </div>
+        </div>
+        <div class="field"><label>Gemini API key (free — <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener" style="color:#ff6b6b">yahan se banao</a>)</label><input id="aireply-key" type="password" class="mono" placeholder="AIza... (sirf ek baar dalni hai)"></div>
+        <div class="field"><label>Reply delay (seconds — insanon jaisa lage, 10-60 behtar)</label><input id="aireply-delay" type="number" min="5" max="120" value="20" class="mono" style="max-width:120px"></div>
+        <div class="field"><label>Custom instructions (optional — AI ko apne baare me batao)</label><textarea id="aireply-prompt" class="mono" rows="4" placeholder="Example: Main Ramesh hoon, NecxCity clothing store chalata hoon. Customer se pyaar se baat karo. Price list: T-shirt 499, Jeans 999."></textarea></div>
+        <button class="btn btn-red" id="aireply-save">Save settings</button>
+        <div id="aireply-result" style="margin-top:14px"></div>
+      </div>
+      <div class="panel glass">
+        <h2>Kaise kaam karta hai</h2>
+        <p class="desc">1. <b>Gemini API key</b> banao (upar link) aur yahan paste karke Save dabao.<br>2. <b>Auto-reply ON</b> karo jab tum busy/offline ho.<br>3. Koi message aayega to AI <b>15-20 sec</b> ruk ke (natural lage) usi language me jawab bhej dega.<br>4. Wapas aake <b>OFF</b> kar do — ya ON hi rehne do.<br><br>Key sirf tumhare browser aur tumhare codespace me rehti hai — kahin aur nahi jaati.</p>
       </div>
     </div>
   </div>

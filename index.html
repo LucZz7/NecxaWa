@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NecxaWA — Self-Hosted WhatsApp API Gateway Console</title>
-<meta name="description" content="NecxaWA is a real, working console for the OpenWA WhatsApp API gateway. Run the backend with Docker, pair with QR, and send messages through a real REST API.">
+<title>NecxChat — Self-Hosted WhatsApp API Gateway Console</title>
+<meta name="description" content="NecxChat is a real, working console for the OpenWA WhatsApp API gateway. Run the backend with Docker, pair with QR, and send messages through a real REST API.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
@@ -28,7 +28,7 @@
 <header class="hero wrap">
   <div class="pill reveal"><span class="dot"></span> Real working build — powered by the open-source OpenWA gateway</div>
   <h1 class="reveal">WhatsApp automation,<br><span class="grad">self-hosted &amp; real.</span></h1>
-  <p class="reveal">NecxaWA is a real console for the OpenWA WhatsApp API gateway. Run the backend on your own machine or server with Docker, pair your WhatsApp with a QR code, and send messages, media and webhooks through a genuine REST API — no fake simulations.</p>
+  <p class="reveal">NecxChat is a real console for the OpenWA WhatsApp API gateway. Run the backend on your own machine or server with Docker, pair your WhatsApp with a QR code, and send messages, media and webhooks through a genuine REST API — no fake simulations.</p>
   <div class="hero-cta reveal">
     <a class="btn btn-red" href="console.html">Launch Console
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
@@ -98,13 +98,24 @@ docker compose up -d</code>
 <section><div class="wrap" style="text-align:center">
   <h2 class="sec-title reveal">Ready to pair your WhatsApp?</h2>
   <p class="sec-sub reveal">Backend running? Open the console and scan your first QR.</p>
-  <a class="btn btn-red reveal" href="console.html" style="font-size:16px;padding:15px 34px">Open NecxaWA Console</a>
+  <a class="btn btn-red reveal" href="console.html" style="font-size:16px;padding:15px 34px">Open NecxChat Console</a>
 </div></section>
 
 <footer><div class="wrap foot">
-  <span>NecxaWA — real console for the open-source <a href="https://github.com/rmyndharis/OpenWA" style="margin:0">OpenWA</a> gateway (MIT).</span>
+  <span>NecxChat — real console for the open-source <a href="https://github.com/rmyndharis/OpenWA" style="margin:0">OpenWA</a> gateway (MIT).</span>
   <span><a href="console.html">Console</a><a href="docs.html">API Docs</a><a href="https://github.com/rmyndharis/OpenWA">OpenWA GitHub</a></span>
 </div></footer>
 <script src="js/main.js"></script>
+
+<a href="https://t.me/i_necxy" target="_blank" rel="noopener" class="necxy-dev">NECXY DEVELOPER</a>
+<style>
+.necxy-dev{
+  display:block;text-align:center;margin:40px auto 24px;padding:8px;
+  font-size:11px;letter-spacing:4px;color:#fff;
+  opacity:.28;filter:blur(.4px);text-decoration:none;
+  transition:opacity .3s,filter .3s;user-select:none;
+}
+.necxy-dev:hover{opacity:.85;filter:blur(0)}
+</style>
 </body>
 </html>
